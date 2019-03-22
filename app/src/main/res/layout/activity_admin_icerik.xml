@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminIcerikActivity">
+
+
+    <EditText
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        android:id="@+id/icerik"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:inputType="textPersonName"
+        />
+    <Spinner
+        android:id="@+id/sIcerik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icerik"/>
+
+    <Button
+        android:id="@+id/icerikEkle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sIcerik"
+        android:text="İcerik Ekle" />
+
+    <ListView
+        android:id="@+id/listicerik"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/icerikEkle" />
+
+
+
+</RelativeLayout>

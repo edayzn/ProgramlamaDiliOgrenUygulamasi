@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/ara"
+        android:icon="@drawable/ara"
+        android:orderInCategory="100"
+        android:title="ARA"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/Diller"
+        android:orderInCategory="100"
+        android:title="Diller"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/Konular"
+        android:orderInCategory="100"
+        android:title="Konular"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/baslik"
+        android:orderInCategory="100"
+        android:title="Alt Başlık"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/icerik"
+        android:orderInCategory="100"
+        android:title="İçerikler"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/user"
+        android:orderInCategory="100"
+        android:title="Kullanıcılar"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/cikis"
+        android:orderInCategory="100"
+        android:title="Çıkış"
+        app:showAsAction="never"></item>
+
+</menu>

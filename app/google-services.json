@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "15515666926",
+    "firebase_url": "https://programlamadiliogren.firebaseio.com",
+    "project_id": "programlamadiliogren",
+    "storage_bucket": "programlamadiliogren.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15515666926:android:52732db7b3b118be",
+        "android_client_info": {
+          "package_name": "com.example.programlamadiliogren"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15515666926-dofhugj0n3lrnjbqbt7lv6mmhlai8b5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.programlamadiliogren",
+            "certificate_hash": "b2c97a6c01a784a309db16d196667b250696f0e9"
+          }
+        },
+        {
+          "client_id": "15515666926-apj5u314tff7rhq5dfkd7iejq6tihufi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABVTbeAke-8WUJuTiZbmfA-8gmK190sgY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "15515666926-apj5u314tff7rhq5dfkd7iejq6tihufi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

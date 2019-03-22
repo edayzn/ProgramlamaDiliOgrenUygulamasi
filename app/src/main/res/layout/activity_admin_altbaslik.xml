@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminAltbaslikActivity">
+
+    <EditText
+        android:id="@+id/textBaslik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:maxLength="100"
+        android:inputType="textPersonName"
+        android:hint="Alt Başlık Adı" />
+
+    <Spinner
+        android:id="@+id/sBaslik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textBaslik"/>
+
+    <Button
+        android:id="@+id/btnBaslik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sBaslik"
+        android:text="Başlık Ekle" />
+
+    <ListView
+        android:id="@+id/listBaslik"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnBaslik"/>
+</RelativeLayout>
