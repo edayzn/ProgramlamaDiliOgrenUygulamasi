@@ -171,13 +171,14 @@ public class AdminIcerikActivity extends AppCompatActivity {
                 mesaj = "tıklandı";
                 break;
             case R.id.icerik:
-                startActivity(new Intent(AdminIcerikActivity.this, AdminAltbaslikActivity.class));
+                startActivity(new Intent(AdminIcerikActivity.this, AdminIcerikActivity.class));
                 mesaj = "tıklandı";
                 break;
             case R.id.user:
                 mesaj = "tıklandı";
                 break;
             case R.id.cikis:
+                startActivity(new Intent(AdminIcerikActivity.this, MainActivity.class));
                 mesaj = "tıklandı";
                 break;
 

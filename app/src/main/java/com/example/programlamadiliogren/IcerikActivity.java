@@ -50,12 +50,11 @@ public class IcerikActivity extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference myref = FirebaseDatabase.getInstance().getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-   ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapter;
 
     final ArrayList<String> arrayList = new ArrayList<>();
     //private View TabIndicator;
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -93,6 +92,7 @@ public class IcerikActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Icerik icerik = dataSnapshot.getValue(Icerik.class);
+                    // final String id = dataSnapshot.getKey();
                     // System.out.println(" veriiiiiii" + gelenbaslik);
                     if (gelenbaslik.equals(icerik.getBaslikAdi())) {
                         System.out.println("içerikk" + icerik.getIcerik());
@@ -175,7 +175,7 @@ public class IcerikActivity extends AppCompatActivity {
         listDataHeader = new ArrayList<>();
         listdataChild = new HashMap<String, List<String>>();
         listDataHeader.add("Yorumlar");
-       listyrm();
+        listyrm();
         listdataChild.put(listDataHeader.get(0), arrayList);
 
 
@@ -209,14 +209,18 @@ public class IcerikActivity extends AppCompatActivity {
         Toast.makeText(this, mesaj, Toast.LENGTH_LONG).show();
         return super.onOptionsItemSelected(item);
     }
-    public void listyrm(){
+
+    public void listyrm() {
         myref.child("Yorumlar").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Yorum yrm =dataSnapshot.getValue(Yorum.class);
-                System.out.println(yrm.getYorum());
-                arrayList.add(yrm.getYorum()+" " + yrm.getUser());
-                listdataChild.put(listDataHeader.get(0), arrayList);
+                Yorum yrm = dataSnapshot.getValue(Yorum.class);
+                //System.out.println("yrm" + yrm.getYorum());
+                if (yrm.getIcerik().equals(icerikDetay.getText().toString())) {
+                  //  System.out.println("yroum içerik" + yrm.getIcerik());
+                    arrayList.add(yrm.getYorum() + " " + yrm.getUser());
+                    listdataChild.put(listDataHeader.get(0), arrayList);
+                }
             }
 
             @Override

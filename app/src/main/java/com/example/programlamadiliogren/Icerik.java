@@ -27,4 +27,6 @@ private String baslikAdi;
     public void setBaslikAdi(String baslikAdi) {
         this.baslikAdi = baslikAdi;
     }
+
+
 }
