@@ -125,6 +125,10 @@ public class AdminHomeActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminHomeActivity.this, AdminIcerikActivity.class));
                 mesaj = "tıklandı";
                 break;
+            case R.id.soruCevap:
+                startActivity(new Intent(AdminHomeActivity.this, AdminSoruCevapActivity.class));
+                mesaj = "tıklandı";
+                break;
             case R.id.user:
                 mesaj = "tıklandı";
                 break;

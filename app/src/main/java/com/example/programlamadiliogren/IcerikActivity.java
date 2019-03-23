@@ -216,7 +216,6 @@ public class IcerikActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Yorum yrm = dataSnapshot.getValue(Yorum.class);
                 if (yrm.getIcerik().equals(icerikDetay.getText().toString())) {
-                  //  System.out.println("yroum içerik" + yrm.getIcerik());
                     arrayList.add(yrm.getYorum() + " " + yrm.getUser());
                     listdataChild.put(listDataHeader.get(0), arrayList);
                 }

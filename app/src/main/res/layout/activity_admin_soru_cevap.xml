@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminSoruCevapActivity">
+
+
+    <EditText
+        android:id="@+id/textSoru"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:ems="10"
+        android:hint="Soru"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/secenek1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textSoru"
+        android:ems="10"
+        android:hint="Secenek A"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/secenek2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secenek1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Seçenek B" />
+
+    <EditText
+        android:id="@+id/secenek3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secenek2"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Seçenek C" />
+    <EditText
+        android:id="@+id/cevap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secenek3"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Cevap" />
+
+    <Spinner
+        android:id="@+id/spinnericerik"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textMultiLine"
+        android:layout_below="@+id/cevap"/>
+
+    <Button
+        android:id="@+id/btnSoruCevap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnericerik"
+        android:text="Soru Cevap Ekle" />
+
+    <ListView
+        android:id="@+id/listSoruCevap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btnSoruCevap"/>
+
+
+
+</RelativeLayout>

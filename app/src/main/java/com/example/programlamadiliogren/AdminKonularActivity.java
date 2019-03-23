@@ -63,10 +63,10 @@ public class AdminKonularActivity extends AppCompatActivity {
                 final String string = dataSnapshot.getValue(String.class);
 
                final String id=dataSnapshot.getKey();
-                System.out.println("---------");
+               /* System.out.println("---------");
                 System.out.println("id=="+id);
                 System.out.println("String=="+string);
-                System.out.println("---------");
+                System.out.println("---------");*/
                 arrayList.add(string);
                 dataAdapter.notifyDataSetChanged();
 

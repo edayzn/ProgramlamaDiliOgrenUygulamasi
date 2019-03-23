@@ -28,6 +28,11 @@
         android:title="İçerikler"
         app:showAsAction="never"></item>
     <item
+        android:id="@+id/soruCevap"
+        android:orderInCategory="100"
+        android:title="Sorularn ve Cevaplar"
+        app:showAsAction="never"></item>
+    <item
         android:id="@+id/user"
         android:orderInCategory="100"
         android:title="Kullanıcılar"
