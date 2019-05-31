@@ -1,9 +1,11 @@
 package com.example.programlamadiliogren;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,13 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminKonularActivity extends AppCompatActivity {
-    EditText textKonu,text;
+    EditText textKonu, text, image;
     Spinner spinner;
     Button btnKonu;
     ListView listView;
     DatabaseReference myref = FirebaseDatabase.getInstance().getReference();
     List<String> arrayList = new ArrayList<String>();
     ArrayList<String> arrayListkonu = new ArrayList<>();
+    ArrayList<String> myKeys = new ArrayList<>();
     ArrayAdapter<String> dataAdapter;
     ArrayAdapter<String> adapter;
 
@@ -46,10 +49,10 @@ public class AdminKonularActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_konular);
         listView = (ListView) findViewById(R.id.listView);
         textKonu = (EditText) findViewById(R.id.textKonu);
-       // text=(EditText) findViewById(R.id.textdill) ;
+        // text=(EditText) findViewById(R.id.textdill) ;
         btnKonu = (Button) findViewById(R.id.btnKonu);
         spinner = (Spinner) findViewById(R.id.spinnerKonu);
-
+        image = (EditText) findViewById(R.id.konuresm);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListkonu);
 
         dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
@@ -60,22 +63,19 @@ public class AdminKonularActivity extends AppCompatActivity {
         myref.child("Diller").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                final String string = dataSnapshot.getValue(String.class);
-
-               final String id=dataSnapshot.getKey();
-               /* System.out.println("---------");
-                System.out.println("id=="+id);
-                System.out.println("String=="+string);
-                System.out.println("---------");*/
-                arrayList.add(string);
+                final Diller string = dataSnapshot.getValue(Diller.class);
+                final String id = dataSnapshot.getKey();
+                arrayList.add(string.getDilAdi());
                 dataAdapter.notifyDataSetChanged();
-
-
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayList.set(index, value);
+                dataAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -98,19 +98,23 @@ public class AdminKonularActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Konular string = dataSnapshot.getValue(Konular.class);
-                arrayListkonu.add(string.getKonuAdi() +" "+ string.getDilAdi());
+                arrayListkonu.add(string.getKonuAdi() + " " + string.getDilAdi());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayListkonu.set(index, value);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 Konular string = dataSnapshot.getValue(Konular.class);
-                arrayListkonu.remove(string.getKonuAdi() +" "+ string.getDilAdi());
+                arrayListkonu.remove(string.getKonuAdi() + " " + string.getDilAdi());
                 adapter.notifyDataSetChanged();
             }
 
@@ -125,38 +129,23 @@ public class AdminKonularActivity extends AppCompatActivity {
             }
         });
 
-      //  spinner.setOnItemSelectedListener(onItemSelectedListener);
 
         btnKonu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            System.out.println(" key" +spinner.getSelectedItem() )  ;
-                //System.out.println("id----"+spinner.getSelectedItemId());
+                System.out.println(" key" + spinner.getSelectedItem());
                 myref.child("Konular").push().setValue(
                         new Konular(
 
                                 textKonu.getText().toString(),
-                                //text.getText().toString()
-                              spinner.getSelectedItem().toString()
-
+                                spinner.getSelectedItem().toString(),
+                                image.getText().toString()
                         )
                 );
             }
         });
     }
-   /*OnItemSelectedListener onItemSelectedListener=new OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String s1=String.valueOf(arrayList.get(position));
-            text.setText((s1);
 
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -182,12 +171,13 @@ public class AdminKonularActivity extends AppCompatActivity {
                 break;
             case R.id.icerik:
                 startActivity(new Intent(AdminKonularActivity.this, AdminIcerikActivity.class));
-                mesaj="tıklandı";
+                mesaj = "tıklandı";
                 break;
             case R.id.user:
                 mesaj = "tıklandı";
                 break;
             case R.id.cikis:
+                onBackPressed();
                 mesaj = "tıklandı";
                 break;
 
@@ -195,5 +185,33 @@ public class AdminKonularActivity extends AppCompatActivity {
         }
         Toast.makeText(this, mesaj, Toast.LENGTH_LONG).show();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminKonularActivity.this);
+        // set title
+        alertDialogBuilder.setTitle("Uyarı");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Uygulamadan Çıkış Yapmak mı İstiyorsunuz ? ")
+                .setCancelable(false)
+                .setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AdminKonularActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

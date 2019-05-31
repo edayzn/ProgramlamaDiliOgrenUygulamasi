@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminHomeActivity">
+    tools:context=".AdminHomeActivity"
+    android:background="@color/colorEkran2">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,11 +28,20 @@
             android:hint="Dil Adı"
             android:inputType="textPersonName" />
 
+        <EditText
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_below="@+id/textDil"
+            android:inputType="textPersonName"
+            android:hint="Resim adresi" />
+
         <Button
             android:id="@+id/btnDil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textDil"
+            android:layout_below="@+id/image"
             android:text="Dil Ekle" />
     </RelativeLayout>
 

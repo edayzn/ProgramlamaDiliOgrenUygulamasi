@@ -3,13 +3,27 @@ package com.example.programlamadiliogren;
 public class Konular {
     private String konuAdi;
     private String dilAdi;
-
+    private String image;
     public Konular() {
     }
 
-    public Konular(String konuAdi, String dilAdi) {
+    public Konular(String konuAdi,String image) {
+        this.konuAdi = konuAdi;
+        this.image=image;
+    }
+
+    public Konular(String konuAdi, String dilAdi,String image) {
         this.konuAdi = konuAdi;
         this.dilAdi = dilAdi;
+        this.image=image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getKonuAdi() {

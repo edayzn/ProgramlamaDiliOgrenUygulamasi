@@ -2,29 +2,29 @@ package com.example.programlamadiliogren;
 
 public class SoruCevap {
     private String soru;
-    private String cevap;
     private String secenek1;
     private String secenek2;
     private String secenek3;
-    private String icerik;
+    private String cevap;
+    private String baslikAdi;
     public SoruCevap() {
     }
 
-    public SoruCevap(String soru, String cevap, String secenek1, String secenek2, String secenek3,String icerik) {
+    public SoruCevap(String soru, String secenek1, String secenek2, String secenek3, String cevap) {
         this.soru = soru;
-        this.cevap = cevap;
         this.secenek1 = secenek1;
         this.secenek2 = secenek2;
         this.secenek3 = secenek3;
-        this.icerik=icerik;
+        this.cevap = cevap;
     }
 
-    public String getIcerik() {
-        return icerik;
-    }
-
-    public void setIcerik(String icerik) {
-        this.icerik = icerik;
+    public SoruCevap(String soru, String secenek1, String secenek2, String secenek3, String cevap, String baslikAdi) {
+        this.soru = soru;
+        this.secenek1 = secenek1;
+        this.secenek2 = secenek2;
+        this.secenek3 = secenek3;
+        this.cevap = cevap;
+        this. baslikAdi= baslikAdi;
     }
 
     public String getSoru() {
@@ -33,14 +33,6 @@ public class SoruCevap {
 
     public void setSoru(String soru) {
         this.soru = soru;
-    }
-
-    public String getCevap() {
-        return cevap;
-    }
-
-    public void setCevap(String cevap) {
-        this.cevap = cevap;
     }
 
     public String getSecenek1() {
@@ -65,5 +57,27 @@ public class SoruCevap {
 
     public void setSecenek3(String secenek3) {
         this.secenek3 = secenek3;
+    }
+
+    public String getCevap() {
+        return cevap;
+    }
+
+    public void setCevap(String cevap) {
+        this.cevap = cevap;
+    }
+
+    public String getBaslikAdi() {
+        return baslikAdi;
+    }
+
+    public void setBaslikAdi(String baslikAdi) {
+        this.baslikAdi = baslikAdi;
+    }
+
+    public boolean isCorrectAnswer(String selectedAnswerText){
+
+        return selectedAnswerText.matches(cevap);
+
     }
 }

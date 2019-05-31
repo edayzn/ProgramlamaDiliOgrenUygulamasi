@@ -1,8 +1,10 @@
 package com.example.programlamadiliogren;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,15 +29,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class AdminHomeActivity extends AppCompatActivity {
-    EditText textDil;
+    EditText textDil, image;
     Button btnDilEkle;
     ListView listView;
 
     Toolbar toolbar;
-    DatabaseReference dref = FirebaseDatabase.getInstance().getReference().child("Diller");
+    DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> adapter;
-
+    ArrayList<String> myKeys = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listDil);
         btnDilEkle = (Button) findViewById(R.id.btnDil);
         textDil = (EditText) findViewById(R.id.textDil);
-
+        image = (EditText) findViewById(R.id.image);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,19 +60,23 @@ public class AdminHomeActivity extends AppCompatActivity {
         btnDilEkle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dref.push().setValue(
-                        textDil.getText().toString()
+                dref.child("Diller").push().setValue(
+                        new Diller(
+                                textDil.getText().toString(),
+                                image.getText().toString()
+
+                        )
                 );
             }
         });
 
         listView.setAdapter(adapter);
-        dref.addChildEventListener(new ChildEventListener() {
+        dref.child("Diller").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                String string = dataSnapshot.getValue(String.class);
-                arrayList.add(string);
+                Diller dil = dataSnapshot.getValue(Diller.class);
+                arrayList.add(dil.getDilAdi());
+                System.out.println("diller" + dil.getDilAdi());
                 adapter.notifyDataSetChanged();
             }
 
@@ -95,6 +101,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -109,7 +116,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         String mesaj = "";
         switch (item.getItemId()) {
             case R.id.Diller:
-                startActivity(new Intent(AdminHomeActivity.this, HomeActivity.class));
+                startActivity(new Intent(AdminHomeActivity.this, AdminHomeActivity.class));
                 mesaj = "tıklandı";
                 break;
             case R.id.Konular:
@@ -133,6 +140,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 mesaj = "tıklandı";
                 break;
             case R.id.cikis:
+                onBackPressed();
                 mesaj = "tıklandı";
                 break;
 
@@ -142,5 +150,32 @@ public class AdminHomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminHomeActivity.this);
+        // set title
+        alertDialogBuilder.setTitle("Uyarı");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Uygulamadan Çıkış Yapmak mı İstiyorsunuz ? ")
+                .setCancelable(false)
+                .setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AdminHomeActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
 
 }

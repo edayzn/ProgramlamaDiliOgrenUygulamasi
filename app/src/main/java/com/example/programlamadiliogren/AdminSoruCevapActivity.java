@@ -1,11 +1,16 @@
 package com.example.programlamadiliogren;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +40,7 @@ public class AdminSoruCevapActivity extends AppCompatActivity {
     ArrayAdapter<String> adaptericerik;
     List<String> arrayListicerik = new ArrayList<String>();
     ArrayList<String> arrayListsorucevap = new ArrayList<>();
+    ArrayList<String> myKeys = new ArrayList<String>();
     ArrayAdapter<String> adaptersorucevap;
     DatabaseReference myref = FirebaseDatabase.getInstance().getReference();
 
@@ -82,19 +89,23 @@ public class AdminSoruCevapActivity extends AppCompatActivity {
 
     }
     public void listele(){
-        myref.child("Icerik").addChildEventListener(new ChildEventListener() {
+        myref.child("AltBaslik").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 //   DataSnapshot ds= (DataSnapshot) dataSnapshot.child("Icerik").getChildren();
-                Icerik icerik = dataSnapshot.getValue(Icerik.class);
-                arrayListicerik.add(icerik.getIcerik());
+                AltBaslik bslk = dataSnapshot.getValue(AltBaslik.class);
+                arrayListicerik.add(bslk.getBaslikAdi());
                 adaptericerik.notifyDataSetChanged();
 
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayListicerik.set(index, value);
+                adaptericerik.notifyDataSetChanged();
             }
 
             @Override
@@ -124,7 +135,11 @@ public class AdminSoruCevapActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayListsorucevap.set(index, value);
+                adaptersorucevap.notifyDataSetChanged();
             }
 
             @Override
@@ -142,5 +157,74 @@ public class AdminSoruCevapActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String mesaj = "";
+        switch (item.getItemId()) {
+            case R.id.Diller:
+                startActivity(new Intent(AdminSoruCevapActivity.this, AdminHomeActivity.class));
+                mesaj = "tıklandı";
+                break;
+            case R.id.Konular:
+                startActivity(new Intent(AdminSoruCevapActivity.this, AdminKonularActivity.class));
+                mesaj = "tıklandı";
+                break;
+            case R.id.baslik:
+                startActivity(new Intent(AdminSoruCevapActivity.this, AdminAltbaslikActivity.class));
+                mesaj = "tıklandı";
+                break;
+            case R.id.icerik:
+                startActivity(new Intent(AdminSoruCevapActivity.this, AdminIcerikActivity.class));
+                mesaj = "tıklandı";
+                break;
+            case R.id.user:
+                mesaj = "tıklandı";
+                break;
+            case R.id.cikis:
+                //startActivity(new Intent(AdminIcerikActivity.this, MainActivity.class));
+                onBackPressed();
+                mesaj = "tıklandı";
+                break;
+
+
+        }
+        Toast.makeText(this, mesaj, Toast.LENGTH_LONG).show();
+        return super.onOptionsItemSelected(item);
+
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminSoruCevapActivity.this);
+        // set title
+        alertDialogBuilder.setTitle("Uyarı");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Uygulamadan Çıkış Yapmak mı İstiyorsunuz ? ")
+                .setCancelable(false)
+                .setPositiveButton("Evet",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        AdminSoruCevapActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("Hayır",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

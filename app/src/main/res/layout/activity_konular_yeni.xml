@@ -9,5 +9,7 @@
     <ExpandableListView
         android:id="@+id/elist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ExpandableListView>
+        android:layout_height="match_parent">
+
+    </ExpandableListView>
 </android.support.constraint.ConstraintLayout>

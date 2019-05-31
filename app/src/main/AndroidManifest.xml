@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AdminSoruCevapActivity"></activity>
-        <activity android:name=".IcerikActivity" />
         <activity android:name=".AdminIcerikActivity" />
+        <activity android:name=".IcerikActivity" />
         <activity android:name=".KonularYeniActivity" />
         <activity android:name=".AdminAltbaslikActivity" />
         <activity android:name=".AltbaslikActivity" />
@@ -26,6 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

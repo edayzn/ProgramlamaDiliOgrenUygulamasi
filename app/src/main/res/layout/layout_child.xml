@@ -17,6 +17,7 @@
             android:layout_marginLeft="20dp"
             android:textSize="18dp"
             android:text="Yorum"
+            android:textColor="#ffffff"
             android:layout_centerVertical="true" />
 
 

@@ -11,24 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Konu Giriniz" />
+        android:hint="Konu Giriniz"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/konuresm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textKonu"
+        android:ems="10"
+        android:hint="Resim Yolu"
+        android:inputType="textPersonName" />
 
     <Spinner
         android:id="@+id/spinnerKonu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textKonu"
+        android:layout_height="30dp"
+        android:layout_below="@+id/konuresm" />
 
-        />
 
     <Button
         android:id="@+id/btnKonu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Konu Ekle"
-        android:layout_below="@+id/spinnerKonu"/>
-
+        android:layout_below="@+id/spinnerKonu"
+        android:text="Konu Ekle" />
 
 
     <ListView

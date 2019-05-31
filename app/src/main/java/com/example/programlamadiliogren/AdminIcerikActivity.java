@@ -1,8 +1,10 @@
 package com.example.programlamadiliogren;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -37,6 +39,7 @@ public class AdminIcerikActivity extends AppCompatActivity {
     ArrayAdapter<String> adapterIcerik;
     List<String> arrayListIcerik = new ArrayList<>();
     ArrayList<String> arrayListBaslik = new ArrayList<String>();
+    ArrayList<String> myKeys = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     DatabaseReference myref;
 
@@ -82,7 +85,11 @@ public class AdminIcerikActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayListBaslik.set(index, value);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -106,13 +113,20 @@ public class AdminIcerikActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Icerik icerik = dataSnapshot.getValue(Icerik.class);
-                adapterIcerik.add(icerik.getIcerik());
+                arrayListIcerik.add(icerik.getIcerik());
+                String key = dataSnapshot.getKey();
+                myKeys.add(key);
                 adapterIcerik.notifyDataSetChanged();
+
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayListIcerik.set(index, value);
+                adapterIcerik.notifyDataSetChanged();
             }
 
             @Override
@@ -134,7 +148,7 @@ public class AdminIcerikActivity extends AppCompatActivity {
         });
     }
 
-  AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+    AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String s1 = String.valueOf(arrayListBaslik.get(position));
@@ -178,7 +192,8 @@ public class AdminIcerikActivity extends AppCompatActivity {
                 mesaj = "tıklandı";
                 break;
             case R.id.cikis:
-                startActivity(new Intent(AdminIcerikActivity.this, MainActivity.class));
+                //startActivity(new Intent(AdminIcerikActivity.this, MainActivity.class));
+                onBackPressed();
                 mesaj = "tıklandı";
                 break;
 
@@ -187,5 +202,33 @@ public class AdminIcerikActivity extends AppCompatActivity {
         Toast.makeText(this, mesaj, Toast.LENGTH_LONG).show();
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminIcerikActivity.this);
+        // set title
+        alertDialogBuilder.setTitle("Uyarı");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Uygulamadan Çıkış Yapmak mı İstiyorsunuz ? ")
+                .setCancelable(false)
+                .setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AdminIcerikActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

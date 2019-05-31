@@ -1,8 +1,10 @@
 package com.example.programlamadiliogren;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
@@ -34,8 +37,9 @@ public class AdminAltbaslikActivity extends AppCompatActivity {
     Button baslikEkle;
     ListView listBaslik;
     DatabaseReference myref = FirebaseDatabase.getInstance().getReference();
-    ArrayList<String> arrayListKonu = new ArrayList<>();
-    List<String> arrayListBaslik = new ArrayList<String>();
+    ArrayList<String> arrayListBaslik  = new ArrayList<>();
+    ArrayList<String> myKeys = new ArrayList<String>();
+    List<String> arrayListKonu = new ArrayList<String>();
     ArrayAdapter<String> adapterKonu;
     ArrayAdapter<String> adapter;
 
@@ -50,25 +54,29 @@ public class AdminAltbaslikActivity extends AppCompatActivity {
         baslikEkle = (Button) findViewById(R.id.btnBaslik);
         listBaslik = (ListView) findViewById(R.id.listBaslik);
 
-        adapterKonu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListKonu);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListBaslik );
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayListBaslik);
+         adapterKonu= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayListKonu);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        sBaslik.setAdapter(adapter);
+        sBaslik.setAdapter(adapterKonu);
 
         myref.child("Konular").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Konular string = dataSnapshot.getValue(Konular.class);
-                arrayListBaslik.add(string.getKonuAdi());
-                adapter.notifyDataSetChanged();
+                arrayListKonu.add(string.getKonuAdi());
+                adapterKonu.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String value = dataSnapshot.getValue(String.class);
+                String key = dataSnapshot.getKey();
+                int index = myKeys.indexOf(key);
+                arrayListKonu.set(index, value);
+                adapterKonu.notifyDataSetChanged();
             }
 
             @Override
@@ -88,13 +96,13 @@ public class AdminAltbaslikActivity extends AppCompatActivity {
         });
        // sBaslik.setOnItemSelectedListener(onItemSelectedListener);
 
-        listBaslik.setAdapter(adapterKonu);
+        listBaslik.setAdapter(adapter);
         myref.child("AltBaslik").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 AltBaslik string = dataSnapshot.getValue(AltBaslik.class);
-                arrayListKonu.add(string.getBaslikAdi() + " " + string.getKonuAdi());
-                adapterKonu.notifyDataSetChanged();
+                arrayListBaslik.add(string.getBaslikAdi() + " " + string.getKonuAdi());
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -137,6 +145,23 @@ public class AdminAltbaslikActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item=menu.findItem(R.id.ara);
+        SearchView searchView= (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -164,6 +189,7 @@ public class AdminAltbaslikActivity extends AppCompatActivity {
                 mesaj = "tıklandı";
                 break;
             case R.id.cikis:
+                onBackPressed();
                 mesaj = "tıklandı";
                 break;
 
@@ -185,4 +211,31 @@ public class AdminAltbaslikActivity extends AppCompatActivity {
 
         }
     };*/
+   @Override
+   public void onBackPressed() {
+       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminAltbaslikActivity.this);
+       // set title
+       alertDialogBuilder.setTitle("Uyarı");
+
+       // set dialog message
+       alertDialogBuilder
+               .setMessage("Uygulamadan Çıkış Yapmak mı İstiyorsunuz ? ")
+               .setCancelable(false)
+               .setPositiveButton("Evet",new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog,int id) {
+                       AdminAltbaslikActivity.this.finish();
+                   }
+               })
+               .setNegativeButton("Hayır",new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       dialog.cancel();
+                   }
+               });
+
+       // create alert dialog
+       AlertDialog alertDialog = alertDialogBuilder.create();
+
+       // show it
+       alertDialog.show();
+   }
 }

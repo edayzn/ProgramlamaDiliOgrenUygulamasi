@@ -1,8 +1,12 @@
 package com.example.programlamadiliogren;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,17 +14,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +38,16 @@ import java.util.List;
 
 public class AltbaslikActivity extends AppCompatActivity {
 
+    int sayac = 0;
     ListView listviewBaslik;
-    //TextView tv;
     ArrayAdapter<String> adapter;
+    FirebaseListAdapter<AltBaslik> adapterbaslik;
+    ArrayList<String> adapterList;
     ArrayList<String> arrayList = new ArrayList<>();
-    DatabaseReference myref = FirebaseDatabase.getInstance().getReference();
+    ArrayList<String> myKeys = new ArrayList<String>();
+    ArrayList<String> arrayListAltBaslik = new ArrayList<>();
+    DatabaseReference myref = FirebaseDatabase.getInstance().getReference().child("AltBaslik");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,77 +58,70 @@ public class AltbaslikActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
 
         listviewBaslik = (ListView) findViewById(R.id.listviewbaslik);
-        // tv = (TextView) findViewById(R.id.textb);
+
         final Bundle gelenVeri = getIntent().getExtras();
         final String gelenkonu = gelenVeri.get("anahtar").toString();
-        // tv.setText(gelenVeri.getCharSequence("anahtar").toString());
-
-        myref.child("AltBaslik").addChildEventListener(new ChildEventListener() {
+        final Query query = FirebaseDatabase.getInstance().getReference().child("AltBaslik").orderByChild("konuAdi").equalTo(gelenkonu);
+        final FirebaseListOptions<AltBaslik> options = new FirebaseListOptions.Builder<AltBaslik>()
+                .setLayout(R.layout.altbaslik)
+                .setLifecycleOwner(AltbaslikActivity.this)
+                .setQuery(query, AltBaslik.class)
+                .build();
+        adapterbaslik = new FirebaseListAdapter(options) {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                AltBaslik baslik1 = dataSnapshot.getValue(AltBaslik.class);
-                if (gelenkonu.equals(baslik1.getKonuAdi())) {
-                    arrayList.add(baslik1.getBaslikAdi());
-                    adapter.notifyDataSetChanged();
-                }
-                listviewBaslik.setAdapter(adapter);
-                listviewBaslik.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        final String selectedItem = (String) parent.getItemAtPosition(position);
-                        final Intent intent = new Intent(view.getContext(), IcerikActivity.class);
-                        myref.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.child("Icerik").getChildren()) {
-                                    Icerik icerik = dataSnapshot.getValue(Icerik.class);
-                                    AltBaslik baslik = dataSnapshot.getValue(AltBaslik.class);
+            protected void populateView(@NonNull View v, @NonNull Object model, int position) {
+                AltBaslik baslk = (AltBaslik) model;
 
-                                    //if (baslik.getBaslikAdi().equals(icerik.getBaslikAdi())) {
-                                        CharSequence icerikDetay = selectedItem;
-                                        intent.putExtra("anahtar", icerikDetay);
-                                        startActivityForResult(intent, 0);
-                                   // }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                });
+                TextView basliklar = v.findViewById(R.id.altbaslk);
+                ImageView image = v.findViewById(R.id.baslkView);
+                basliklar.setText(baslk.getBaslikAdi());
             }
-
+        };
+        listviewBaslik.setAdapter(adapterbaslik);
+        listviewBaslik.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem1 = ((TextView) view.findViewById(R.id.altbaslk)).getText().toString();
+                final Intent intent = new Intent(view.getContext(), IcerikActivity.class);
+                CharSequence bslk = selectedItem1;
+                intent.putExtra("anahtar", bslk);
+                System.out.println(bslk);
+                startActivityForResult(intent, 0);
             }
         });
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapterbaslik.startListening();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapterbaslik.stopListening();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_user, menu);
+        getMenuInflater().inflate(R.menu.menu_user_ekstra, menu);
+        MenuItem item = menu.findItem(R.id.ara);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -125,10 +133,7 @@ public class AltbaslikActivity extends AppCompatActivity {
                 startActivity(new Intent(AltbaslikActivity.this, HomeActivity.class));
                 mesaj = "tıklandı";
                 break;
-            case R.id.cikis:
-                startActivity(new Intent(AltbaslikActivity.this, MainActivity.class));
-                mesaj = "tıklandı";
-                break;
+
         }
         Toast.makeText(this, mesaj, Toast.LENGTH_LONG).show();
         return super.onOptionsItemSelected(item);

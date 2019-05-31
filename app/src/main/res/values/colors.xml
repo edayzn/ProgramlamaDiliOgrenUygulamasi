@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorYorum">#F4FF81</color>
+    <color name="colorEkran">#02373D</color>
+    <color name="colorEkran2">#008577</color>
+    <color name="colorEkran3">#90FF6E40</color>
 </resources>

@@ -6,6 +6,7 @@
         android:icon="@drawable/ara"
         android:orderInCategory="100"
         android:title="ARA"
+        app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always"></item>
 
     <item

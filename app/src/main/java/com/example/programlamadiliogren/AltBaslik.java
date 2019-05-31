@@ -7,6 +7,10 @@ public class AltBaslik {
     public AltBaslik() {
     }
 
+    public AltBaslik(String baslikAdi) {
+        this.baslikAdi = baslikAdi;
+    }
+
     public AltBaslik(String baslikAdi, String konuAdi) {
         this.baslikAdi = baslikAdi;
         this.konuAdi = konuAdi;

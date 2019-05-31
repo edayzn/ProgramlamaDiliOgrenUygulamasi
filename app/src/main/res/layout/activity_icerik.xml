@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".IcerikActivity"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    android:background="@color/colorEkran2">
 
     <TabHost
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="@style/TabWidgetTheme">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,13 +40,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         android:breakStrategy="balanced"
+                        android:enabled="true"
+                        android:textColor="#ffffff"
+                        android:focusable="true"
                         android:hint="İçerik"
+                        android:longClickable="true"
+                        android:maxLines="30"
+                        android:scrollbars="vertical"
+                        android:textIsSelectable="true"
                         android:textSize="18dp" />
 
                    <ExpandableListView
                        android:id="@+id/expandableListView"
                        android:layout_width="wrap_content"
-                       android:layout_height="match_parent"></ExpandableListView>
+                       android:layout_height="match_parent"
+                       >
+
+                   </ExpandableListView>
 
                 </LinearLayout>
 
@@ -52,13 +64,79 @@
                     android:id="@+id/uygulama"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
 
                     <TextView
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/questionText"
+                        android:text=""
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="İçerik"
-                        android:textSize="24dp" />
+                        android:layout_height="wrap_content"/>
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/a_option"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#ffffff"
+                            android:textSize="18dp"/>
+                        <RadioButton
+                            android:id="@+id/b_option"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#ffffff"
+                            android:textSize="18dp"/>/>
+                        <RadioButton
+                            android:id="@+id/c_option"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#ffffff"
+                            android:textSize="18dp"/>/>
+
+                    </RadioGroup>
+
+                    <Button
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Cevapla"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:id="@+id/answerButton"
+                        android:layout_width="match_parent"
+                        android:background="@color/colorYorum"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_horizontal"
+                        android:id="@+id/scoreText"
+                        android:text=""
+
+                        android:textSize="18sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:textSize="20sp"
+                        android:textColor="#fff"
+                        android:visibility="gone"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/gameState"
+                        android:text="TEST BİTTİ"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </FrameLayout>
