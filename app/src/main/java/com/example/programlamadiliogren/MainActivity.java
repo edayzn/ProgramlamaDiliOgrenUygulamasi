@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressBar.setVisibility(View.GONE);
-                    if (userEmail.getText().toString().equals("admin mail") & userPassword.getText().toString().equals("sifre")) {
+                    if (userEmail.getText().toString().equals("adminmail") & userPassword.getText().toString().equals("sifre")) {
                         startActivity(new Intent(MainActivity.this, AdminHomeActivity.class));
                     } else if (task.isSuccessful()) {
                         current();
